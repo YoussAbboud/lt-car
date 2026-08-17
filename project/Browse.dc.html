@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Manrope',sans-serif;color:#050B20;background:#fff;-webkit-font-smoothing:antialiased}
+a{color:#050B20;text-decoration:none}a:hover{color:#405FF2}
+select,input{font-family:'Manrope',sans-serif}
+</style>
+</helmet>
+<div data-screen-label="Browse">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid #EEF0F4;position:sticky;top:0;background:#fff;z-index:20">
+    <a href="Landing.dc.html" style="font-size:20px;font-weight:800;letter-spacing:-0.5px">Auto<span style="color:#405FF2">Rinka</span></a>
+    <nav style="display:flex;gap:28px;font-size:14px;font-weight:600">
+      <a href="Browse.dc.html" style="color:#405FF2">Browse</a>
+      <a href="Sell.dc.html">Sell</a>
+      <a href="Pricing.dc.html">Pricing</a>
+      <a href="Dashboard.dc.html">Dashboard</a>
+      <a href="Messages.dc.html">Messages</a>
+    </nav>
+    <div style="display:flex;align-items:center;gap:18px;font-size:13.5px;font-weight:600">
+      <span style="color:#50565E;cursor:pointer">LT / <span style="color:#050B20;text-decoration:underline">EN</span></span>
+      <a href="Sell.dc.html" style="background:#405FF2;color:#fff;border-radius:99px;padding:9px 20px" style-hover="background:#2E4AD9;color:#fff">Sell your car</a>
+    </div>
+  </header>
+  <div style="max-width:1360px;margin:0 auto;display:grid;grid-template-columns:280px 1fr;gap:36px;padding:32px 40px 80px;align-items:start">
+    <!-- Sidebar -->
+    <aside style="position:sticky;top:88px;max-height:calc(100vh - 110px);overflow-y:auto;padding-right:10px;display:flex;flex-direction:column;gap:26px">
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Location</div>
+        <select onChange="{{ setCity }}" value="{{ f.city }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;background:#fff">
+          <option value="">All of Lithuania</option>
+          <sc-for list="{{ cities }}" as="c" hint-placeholder-count="5"><option value="{{ c }}">{{ c }}</option></sc-for>
+        </select>
+        <select style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;background:#fff;margin-top:8px;color:#50565E">
+          <option>Search within 50 km</option><option>Search within 100 km</option><option>Search within 200 km</option><option>Whole country</option>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Make &amp; Model</div>
+        <select onChange="{{ setMake }}" value="{{ f.make }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;background:#fff">
+          <option value="">Any Make</option>
+          <sc-for list="{{ makes }}" as="m" hint-placeholder-count="5"><option value="{{ m }}">{{ m }}</option></sc-for>
+        </select>
+        <select onChange="{{ setModel }}" value="{{ f.model }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;background:#fff;margin-top:8px">
+          <option value="">Any Model</option>
+          <sc-for list="{{ models }}" as="m"><option value="{{ m }}">{{ m }}</option></sc-for>
+        </select>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Condition</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ conds }}" as="c" hint-placeholder-count="3">
+            <label onClick="{{ c.pick }}" style="display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;cursor:pointer">
+              <span style="width:16px;height:16px;border-radius:99px;border:{{ c.ring }};background:{{ c.fill }};box-sizing:border-box"></span>{{ c.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Price (EUR)</div>
+        <div style="display:flex;gap:8px">
+          <input onChange="{{ setPriceMin }}" value="{{ f.priceMin }}" placeholder="From" inputMode="numeric" style="width:50%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;box-sizing:border-box">
+          <input onChange="{{ setPriceMax }}" value="{{ f.priceMax }}" placeholder="To" inputMode="numeric" style="width:50%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;box-sizing:border-box">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Body Type</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ bodyOpts }}" as="b" hint-placeholder-count="6">
+            <label onClick="{{ b.toggle }}" style="display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;cursor:pointer">
+              <span style="width:16px;height:16px;border-radius:5px;border:{{ b.ring }};background:{{ b.fill }};box-sizing:border-box;color:#fff;font-size:11px;line-height:14px;text-align:center">{{ b.check }}</span>{{ b.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Fuel</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ fuelOpts }}" as="b" hint-placeholder-count="5">
+            <label onClick="{{ b.toggle }}" style="display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;cursor:pointer">
+              <span style="width:16px;height:16px;border-radius:5px;border:{{ b.ring }};background:{{ b.fill }};box-sizing:border-box;color:#fff;font-size:11px;line-height:14px;text-align:center">{{ b.check }}</span>{{ b.label }}
+            </label>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Gearbox</div>
+        <div style="display:flex;gap:8px">
+          <sc-for list="{{ gearOpts }}" as="g" hint-placeholder-count="3">
+            <span onClick="{{ g.pick }}" style="flex:1;text-align:center;border:{{ g.ring }};background:{{ g.fill }};color:{{ g.color }};border-radius:10px;padding:9px 0;font-size:13px;font-weight:700;cursor:pointer">{{ g.label }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Exterior Color</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <sc-for list="{{ colorOpts }}" as="c" hint-placeholder-count="7">
+            <span onClick="{{ c.toggle }}" title="{{ c.label }}" style="width:26px;height:26px;border-radius:99px;background:{{ c.swatch }};border:1px solid #D6DAE2;box-shadow:{{ c.ring }};cursor:pointer;box-sizing:border-box"></span>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Year</div>
+        <div style="display:flex;gap:8px">
+          <input onChange="{{ setYearMin }}" value="{{ f.yearMin }}" placeholder="From" inputMode="numeric" style="width:50%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;box-sizing:border-box">
+          <input onChange="{{ setYearMax }}" value="{{ f.yearMax }}" placeholder="To" inputMode="numeric" style="width:50%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;box-sizing:border-box">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:800;margin-bottom:10px">Max Mileage</div>
+        <select onChange="{{ setKmMax }}" value="{{ f.kmMax }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:600;outline:none;background:#fff">
+          <option value="">Any mileage</option>
+          <option value="30000">Under 30 000 km</option>
+          <option value="60000">Under 60 000 km</option>
+          <option value="100000">Under 100 000 km</option>
+          <option value="150000">Under 150 000 km</option>
+        </select>
+      </div>
+      <span onClick="{{ clearAll }}" style="font-size:13px;font-weight:700;color:#405FF2;cursor:pointer">Clear all filters</span>
+    </aside>
+    <!-- Results -->
+    <main>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+        <div>
+          <h1 style="font-size:26px;font-weight:800;letter-spacing:-0.6px;margin:0 0 2px">Browse Cars</h1>
+          <div style="font-size:13.5px;color:#50565E;font-weight:600">{{ count }} results · filters saved in URL</div>
+        </div>
+        <select onChange="{{ setSort }}" value="{{ sort }}" style="border:1px solid #E1E4EB;border-radius:10px;padding:10px 14px;font-size:13.5px;font-weight:700;outline:none;background:#fff">
+          <option value="newest">Newest first</option>
+          <option value="priceAsc">Price: low to high</option>
+          <option value="priceDesc">Price: high to low</option>
+          <option value="kmAsc">Mileage: lowest</option>
+          <option value="yearDesc">Year: newest</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:22px">
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
+          <a href="{{ r.href }}" style="display:block;border:{{ r.border }};border-radius:16px;background:{{ r.bg }};padding:22px 22px 18px;color:#050B20" style-hover="box-shadow:0 14px 34px rgba(5,11,32,.10);color:#050B20">
+            <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:2px">
+              <div>
+                <div style="font-size:17px;font-weight:800">{{ r.title }}</div>
+                <div style="font-size:12.5px;color:#50565E;font-weight:600">{{ r.trim }}</div>
+              </div>
+              <div style="text-align:right;flex-shrink:0">
+                <sc-if value="{{ r.oldPrice }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px;color:#9AA1AC;text-decoration:line-through;margin-right:6px">{{ r.oldPrice }}</span></sc-if>
+                <span style="font-size:17px;font-weight:800">{{ r.price }}</span>
+                <div style="font-size:11.5px;color:#50565E;font-weight:600">est. {{ r.monthly }} /mo financing</div>
+              </div>
+            </div>
+            <sc-if value="{{ r.featured }}" hint-placeholder-val="{{ false }}"><span style="display:inline-block;background:#405FF2;color:#fff;font-size:10.5px;font-weight:800;border-radius:99px;padding:3px 10px;letter-spacing:.4px">FEATURED</span></sc-if>
+            <div style="position:relative;height:180px;border-radius:12px;background:{{ r.photo }};margin:12px 0 14px">
+              <span style="position:absolute;bottom:8px;left:12px;font-family:monospace;font-size:10.5px;color:#7A8494">photo: {{ r.photoLabel }}, side profile</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;text-align:center;padding-bottom:12px;border-bottom:1px solid #EEF0F4;margin-bottom:12px">
+              <div><div style="font-size:15px;font-weight:800">{{ r.km }}</div><div style="font-size:11.5px;color:#50565E;font-weight:600">Mileage</div></div>
+              <div style="border-left:1px solid #EEF0F4;border-right:1px solid #EEF0F4"><div style="font-size:15px;font-weight:800">{{ r.year }}</div><div style="font-size:11.5px;color:#50565E;font-weight:600">Year</div></div>
+              <div><div style="font-size:15px;font-weight:800">{{ r.kw }} kW</div><div style="font-size:11.5px;color:#50565E;font-weight:600">Power</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px 18px;font-size:12.5px;color:#50565E;font-weight:600">
+              <span>{{ r.colorLabel }} paint</span><span>{{ r.fuel }} · {{ r.gearbox }}</span>
+              <span>{{ r.drive }} · {{ r.body }}</span><span>{{ r.city }}</span>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+      <sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+        <div style="text-align:center;padding:70px 0;color:#50565E">
+          <div style="font-size:17px;font-weight:800;color:#050B20;margin-bottom:6px">No cars match these filters</div>
+          <div style="font-size:13.5px;margin-bottom:18px">Try widening the price or year range.</div>
+          <span onClick="{{ clearAll }}" style="display:inline-block;background:#405FF2;color:#fff;font-size:13.5px;font-weight:700;border-radius:10px;padding:11px 22px;cursor:pointer">Clear all filters</span>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, sort: "newest", f: { city: "", make: "", model: "", cond: "", priceMin: "", priceMax: "", yearMin: "", yearMax: "", kmMax: "", body: [], fuel: [], gearbox: "", colors: [] } };
+  componentDidMount() {
+    const p = new URLSearchParams(window.location.search);
+    const f = { ...this.state.f };
+    ["city", "make", "model", "cond", "priceMin", "priceMax", "yearMin", "yearMax", "kmMax", "gearbox"].forEach(k => { if (p.get(k)) f[k] = p.get(k); });
+    if (p.get("maxPrice")) f.priceMax = p.get("maxPrice");
+    if (p.get("body")) f.body = p.get("body").split(",");
+    if (p.get("fuel")) f.fuel = p.get("fuel").split(",");
+    if (p.get("colors")) f.colors = p.get("colors").split(",");
+    import("./data.js").then(d => this.setState({ data: d, f, sort: p.get("sort") || "newest" }));
+  }
+  setF(patch) {
+    const f = { ...this.state.f, ...patch };
+    this.setState({ f }, () => this.syncURL());
+  }
+  syncURL() {
+    const { f, sort } = this.state;
+    const p = new URLSearchParams();
+    Object.entries(f).forEach(([k, v]) => {
+      if (Array.isArray(v)) { if (v.length) p.set(k, v.join(",")); }
+      else if (v) p.set(k, v);
+    });
+    if (sort !== "newest") p.set("sort", sort);
+    const qs = p.toString();
+    window.history.replaceState(null, "", window.location.pathname + (qs ? "?" + qs : ""));
+  }
+  toggleIn(key, val) {
+    const arr = this.state.f[key];
+    this.setF({ [key]: arr.includes(val) ? arr.filter(x => x !== val) : [...arr, val] });
+  }
+  renderVals() {
+    const { data, f, sort } = this.state;
+    const src = data ? data.LISTINGS : [];
+    let res = src.filter(l =>
+      (!f.city || l.city === f.city) && (!f.make || l.make === f.make) && (!f.model || l.model === f.model) &&
+      (!f.cond || (f.cond === "new" ? l.year >= 2022 : l.year < 2022)) &&
+      (!f.priceMin || l.price >= +f.priceMin) && (!f.priceMax || l.price <= +f.priceMax) &&
+      (!f.yearMin || l.year >= +f.yearMin) && (!f.yearMax || l.year <= +f.yearMax) &&
+      (!f.kmMax || l.km <= +f.kmMax) &&
+      (!f.body.length || f.body.includes(l.body)) &&
+      (!f.fuel.length || f.fuel.includes(l.fuel)) &&
+      (!f.gearbox || l.gearbox === f.gearbox) &&
+      (!f.colors.length || f.colors.includes(l.color))
+    );
+    const order = { featured: 0, plus: 1, standard: 2 };
+    const sorts = {
+      newest: (a, b) => order[a.tier] - order[b.tier] || b.id - a.id,
+      priceAsc: (a, b) => a.price - b.price, priceDesc: (a, b) => b.price - a.price,
+      kmAsc: (a, b) => a.km - b.km, yearDesc: (a, b) => b.year - a.year
+    };
+    res = [...res].sort(sorts[sort]);
+    const results = data ? res.map(l => ({
+      href: "Listing.dc.html?id=" + l.id,
+      title: l.make + " " + l.model, trim: l.trim + " · " + (l.badge ? l.badge : "Verified seller"),
+      price: data.fmtPrice(l.price), oldPrice: l.oldPrice ? data.fmtPrice(l.oldPrice) : false,
+      monthly: "€" + data.monthly(l.price),
+      featured: l.tier === "featured",
+      border: l.tier === "featured" ? "1.5px solid #405FF2" : (l.tier === "plus" ? "1px solid #B9C6F7" : "1px solid #E1E4EB"),
+      bg: l.tier === "plus" ? "#FAFBFF" : "#fff",
+      photo: data.stripe(l.id), photoLabel: l.make + " " + l.model,
+      km: data.fmtKm(l.km), year: l.year, kw: l.kw,
+      colorLabel: l.color, fuel: l.fuel, gearbox: l.gearbox, drive: l.drive, body: l.body, city: l.city
+    })) : [];
+    const check = (on) => ({ ring: on ? "1.5px solid #405FF2" : "1.5px solid #C6CBD4", fill: on ? "#405FF2" : "#fff", check: on ? "✓" : "" });
+    return {
+      f, sort, results, count: results.length, empty: data && results.length === 0,
+      cities: data ? data.CITIES : [], makes: data ? data.MAKES : [],
+      models: data && f.make ? [...new Set(src.filter(l => l.make === f.make).map(l => l.model))] : [],
+      conds: [["", "All"], ["new", "New (2022+)"], ["used", "Used"]].map(([v, label]) => ({
+        label, ring: f.cond === v ? "5px solid #405FF2" : "1.5px solid #C6CBD4", fill: "#fff",
+        pick: () => this.setF({ cond: v })
+      })),
+      bodyOpts: (data ? data.BODY_TYPES : []).map(b => ({ label: b, ...check(f.body.includes(b)), toggle: () => this.toggleIn("body", b) })),
+      fuelOpts: (data ? data.FUELS : []).map(b => ({ label: b, ...check(f.fuel.includes(b)), toggle: () => this.toggleIn("fuel", b) })),
+      gearOpts: ["", "Manual", "Automatic"].map(g => ({
+        label: g || "Any", ring: f.gearbox === g ? "1.5px solid #405FF2" : "1px solid #E1E4EB",
+        fill: f.gearbox === g ? "#405FF2" : "#fff", color: f.gearbox === g ? "#fff" : "#050B20",
+        pick: () => this.setF({ gearbox: g })
+      })),
+      colorOpts: (data ? data.COLORS : []).map(([label, hex]) => ({
+        label, swatch: hex,
+        ring: f.colors.includes(label) ? "0 0 0 3px #fff, 0 0 0 5px #405FF2" : "none",
+        toggle: () => this.toggleIn("colors", label)
+      })),
+      setCity: e => this.setF({ city: e.target.value }),
+      setMake: e => this.setF({ make: e.target.value, model: "" }),
+      setModel: e => this.setF({ model: e.target.value }),
+      setPriceMin: e => this.setF({ priceMin: e.target.value }),
+      setPriceMax: e => this.setF({ priceMax: e.target.value }),
+      setYearMin: e => this.setF({ yearMin: e.target.value }),
+      setYearMax: e => this.setF({ yearMax: e.target.value }),
+      setKmMax: e => this.setF({ kmMax: e.target.value }),
+      setSort: e => this.setState({ sort: e.target.value }, () => this.syncURL()),
+      clearAll: () => this.setState({ f: { city: "", make: "", model: "", cond: "", priceMin: "", priceMax: "", yearMin: "", yearMax: "", kmMax: "", body: [], fuel: [], gearbox: "", colors: [] } }, () => this.syncURL())
+    };
+  }
+}
+</script>
+</body>
+</html>

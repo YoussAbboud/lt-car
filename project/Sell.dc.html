@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Manrope',sans-serif;color:#050B20;background:#FAFBFC;-webkit-font-smoothing:antialiased}
+a{color:#050B20;text-decoration:none}a:hover{color:#405FF2}
+select,input,textarea{font-family:'Manrope',sans-serif}
+</style>
+</helmet>
+<div data-screen-label="Sell wizard">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid #EEF0F4;background:#fff">
+    <a href="Landing.dc.html" style="font-size:20px;font-weight:800;letter-spacing:-0.5px">Auto<span style="color:#405FF2">Rinka</span></a>
+    <nav style="display:flex;gap:28px;font-size:14px;font-weight:600">
+      <a href="Browse.dc.html">Browse</a><a href="Sell.dc.html" style="color:#405FF2">Sell</a><a href="Pricing.dc.html">Pricing</a><a href="Dashboard.dc.html">Dashboard</a><a href="Messages.dc.html">Messages</a>
+    </nav>
+    <span style="font-size:12.5px;color:#2BB673;font-weight:700">● Draft autosaved</span>
+  </header>
+  <div style="max-width:760px;margin:0 auto;padding:40px 24px 90px">
+    <h1 style="font-size:30px;font-weight:800;letter-spacing:-0.7px;margin:0 0 6px">Sell your car</h1>
+    <p style="font-size:14px;color:#50565E;margin:0 0 30px">Four quick steps. Your draft saves automatically as you go.</p>
+    <div style="display:flex;gap:8px;margin-bottom:34px">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+        <div onClick="{{ s.go }}" style="flex:1;cursor:pointer">
+          <div style="height:5px;border-radius:99px;background:{{ s.bar }};margin-bottom:8px"></div>
+          <div style="font-size:12px;font-weight:700;color:{{ s.color }}">{{ s.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <!-- Step 1: Vehicle -->
+    <sc-if value="{{ isStep1 }}" hint-placeholder-val="{{ true }}">
+      <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;padding:30px;display:grid;grid-template-columns:1fr 1fr;gap:18px 20px">
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Make
+          <select onChange="{{ setMake }}" value="{{ v.make }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;background:#fff;margin-top:6px;color:#050B20;box-sizing:border-box">
+            <option value="">Select make…</option>
+            <sc-for list="{{ makes }}" as="m" hint-placeholder-count="5"><option value="{{ m }}">{{ m }}</option></sc-for>
+          </select>
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Model
+          <select onChange="{{ setModel }}" value="{{ v.model }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;background:#fff;margin-top:6px;color:#050B20;box-sizing:border-box">
+            <option value="">Select model…</option>
+            <sc-for list="{{ models }}" as="m"><option value="{{ m }}">{{ m }}</option></sc-for>
+          </select>
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Year
+          <input onChange="{{ set.year }}" value="{{ v.year }}" placeholder="2020" inputMode="numeric" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;margin-top:6px;box-sizing:border-box">
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Body type
+          <select onChange="{{ set.body }}" value="{{ v.body }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;background:#fff;margin-top:6px;color:#050B20;box-sizing:border-box">
+            <option value="">Select…</option>
+            <sc-for list="{{ bodyTypes }}" as="b"><option value="{{ b }}">{{ b }}</option></sc-for>
+          </select>
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Fuel
+          <select onChange="{{ set.fuel }}" value="{{ v.fuel }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;background:#fff;margin-top:6px;color:#050B20;box-sizing:border-box">
+            <option value="">Select…</option>
+            <sc-for list="{{ fuels }}" as="fu"><option value="{{ fu }}">{{ fu }}</option></sc-for>
+          </select>
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Gearbox
+          <select onChange="{{ set.gearbox }}" value="{{ v.gearbox }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;background:#fff;margin-top:6px;color:#050B20;box-sizing:border-box">
+            <option value="">Select…</option><option>Manual</option><option>Automatic</option>
+          </select>
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Mileage (km)
+          <input onChange="{{ set.km }}" value="{{ v.km }}" placeholder="85 000" inputMode="numeric" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;margin-top:6px;box-sizing:border-box">
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Power (kW)
+          <input onChange="{{ set.kw }}" value="{{ v.kw }}" placeholder="110" inputMode="numeric" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;margin-top:6px;box-sizing:border-box">
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">VIN (optional)
+          <input onChange="{{ set.vin }}" value="{{ v.vin }}" placeholder="WVWZZZ…" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;margin-top:6px;box-sizing:border-box">
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">TA valid until
+          <input onChange="{{ set.ta }}" value="{{ v.ta }}" placeholder="2027-04-01" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;margin-top:6px;box-sizing:border-box">
+        </label>
+      </div>
+    </sc-if>
+    <!-- Step 2: Photos -->
+    <sc-if value="{{ isStep2 }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;padding:30px">
+        <div style="font-size:14px;font-weight:700;margin-bottom:4px">Add photos <span style="color:#50565E;font-weight:600">(min 3, max 20 — first photo is the cover)</span></div>
+        <div style="font-size:12.5px;color:#50565E;margin-bottom:20px">Drag to reorder. Photos are compressed on upload.</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <sc-for list="{{ photoSlots }}" as="p" hint-placeholder-count="8">
+            <div onClick="{{ p.click }}" style="position:relative;height:100px;border-radius:12px;background:{{ p.bg }};border:{{ p.border }};cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:{{ p.color }}">{{ p.label }}
+              <sc-if value="{{ p.cover }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:6px;left:6px;background:#050B20;color:#fff;font-size:10px;font-weight:800;border-radius:99px;padding:3px 8px">COVER</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <div style="font-size:12.5px;font-weight:700;color:{{ photoHint.color }};margin-top:16px">{{ photoHint.text }}</div>
+      </div>
+    </sc-if>
+    <!-- Step 3: Details -->
+    <sc-if value="{{ isStep3 }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;padding:30px;display:flex;flex-direction:column;gap:18px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+          <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Price (EUR)
+            <input onChange="{{ set.price }}" value="{{ v.price }}" placeholder="18 900" inputMode="numeric" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;margin-top:6px;box-sizing:border-box">
+          </label>
+          <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">City
+            <select onChange="{{ set.city }}" value="{{ v.city }}" style="width:100%;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;font-weight:600;outline:none;background:#fff;margin-top:6px;color:#050B20;box-sizing:border-box">
+              <option value="">Select city…</option>
+              <sc-for list="{{ cities }}" as="c"><option value="{{ c }}">{{ c }}</option></sc-for>
+            </select>
+          </label>
+        </div>
+        <label onClick="{{ toggleNegotiable }}" style="display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:600;cursor:pointer">
+          <span style="width:34px;height:20px;border-radius:99px;background:{{ negBg }};position:relative;transition:background .15s"><span style="position:absolute;top:2px;left:{{ negDot }};width:16px;height:16px;border-radius:99px;background:#fff;transition:left .15s"></span></span>
+          Price is negotiable
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Description (Lithuanian)
+          <textarea onChange="{{ set.descLt }}" placeholder="Aprašykite automobilį…" style="width:100%;min-height:80px;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;outline:none;margin-top:6px;box-sizing:border-box;resize:vertical">{{ v.descLt }}</textarea>
+        </label>
+        <label style="font-size:12.5px;font-weight:700;color:#50565E;display:block">Description (English, optional)
+          <textarea onChange="{{ set.descEn }}" placeholder="Describe the car…" style="width:100%;min-height:80px;border:1px solid #E1E4EB;border-radius:10px;padding:11px 12px;font-size:14px;outline:none;margin-top:6px;box-sizing:border-box;resize:vertical">{{ v.descEn }}</textarea>
+        </label>
+        <div>
+          <div style="font-size:12.5px;font-weight:700;color:#50565E;margin-bottom:10px">Options</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ optionChips }}" as="o" hint-placeholder-count="8">
+              <span onClick="{{ o.toggle }}" style="border:{{ o.ring }};background:{{ o.fill }};color:{{ o.color }};border-radius:99px;padding:8px 15px;font-size:13px;font-weight:600;cursor:pointer">{{ o.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+    <!-- Step 4: Package & Pay -->
+    <sc-if value="{{ isStep4 }}" hint-placeholder-val="{{ false }}">
+      <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px">
+          <sc-for list="{{ tiers }}" as="t" hint-placeholder-count="3">
+            <div onClick="{{ t.pick }}" style="background:#fff;border:{{ t.ring }};border-radius:16px;padding:24px;cursor:pointer;position:relative">
+              <sc-if value="{{ t.popular }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-10px;left:20px;background:#405FF2;color:#fff;font-size:10.5px;font-weight:800;border-radius:99px;padding:4px 12px">POPULAR</span></sc-if>
+              <div style="font-size:15px;font-weight:800;margin-bottom:4px">{{ t.name }}</div>
+              <div style="font-size:24px;font-weight:800;letter-spacing:-0.5px;margin-bottom:2px">{{ t.price }}</div>
+              <div style="font-size:12px;color:#50565E;font-weight:600;margin-bottom:14px">30 days</div>
+              <div style="font-size:12.5px;color:#3A4048;line-height:1.7">{{ t.features }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:#E9F2FF;border-radius:14px;padding:16px 22px;margin-top:16px;font-size:13.5px;font-weight:600;color:#1B2B6B;display:flex;justify-content:space-between;align-items:center">
+          <span>On <b>Premium</b> or <b>Dealer</b>? Listing fees are waived. <a href="Pricing.dc.html" style="color:#405FF2;text-decoration:underline">See plans</a></span>
+          <span style="opacity:.7">Payment via Stripe Checkout</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{ done }}" hint-placeholder-val="{{ false }}">
+        <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;padding:50px;text-align:center">
+          <div style="width:60px;height:60px;border-radius:99px;background:#E6F7EF;color:#2BB673;font-size:26px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 18px">✓</div>
+          <h2 style="font-size:22px;font-weight:800;margin:0 0 8px">Payment received — listing submitted</h2>
+          <p style="font-size:14px;color:#50565E;margin:0 0 24px;line-height:1.6">Your {{ summaryName }} is <b>pending review</b>. Most listings are approved within 2 hours.<br>You'll get a notification when it goes live.</p>
+          <div style="display:flex;gap:12px;justify-content:center">
+            <a href="Dashboard.dc.html" style="background:#405FF2;color:#fff;font-size:14px;font-weight:700;border-radius:12px;padding:13px 26px" style-hover="background:#2E4AD9;color:#fff">Go to Dashboard</a>
+            <a href="Browse.dc.html" style="border:1.5px solid #050B20;font-size:14px;font-weight:700;border-radius:12px;padding:12px 26px">Browse cars</a>
+          </div>
+        </div>
+      </sc-if>
+    </sc-if>
+    <!-- Nav buttons -->
+    <sc-if value="{{ notDone }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;justify-content:space-between;margin-top:26px">
+        <span onClick="{{ back }}" style="visibility:{{ backVis }};border:1.5px solid #C6CBD4;color:#50565E;font-size:14px;font-weight:700;border-radius:12px;padding:12px 26px;cursor:pointer">← Back</span>
+        <span onClick="{{ next }}" style="background:#405FF2;color:#fff;font-size:14px;font-weight:700;border-radius:12px;padding:13px 30px;cursor:pointer">{{ nextLabel }}</span>
+      </div>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    data: null, step: 0, done: false, tier: "plus", photos: 0,
+    v: { make: "", model: "", year: "", body: "", fuel: "", gearbox: "", km: "", kw: "", vin: "", ta: "", price: "", city: "", descLt: "", descEn: "", negotiable: true, options: [] }
+  };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+  setV(patch) { this.setState({ v: { ...this.state.v, ...patch } }); }
+  renderVals() {
+    const { data, step, done, tier, photos, v } = this.state;
+    const labels = ["1 · Vehicle", "2 · Photos", "3 · Details", "4 · Package & Pay"];
+    const set = {};
+    ["year", "body", "fuel", "gearbox", "km", "kw", "vin", "ta", "price", "city", "descLt", "descEn"].forEach(k => { set[k] = e => this.setV({ [k]: e.target.value }); });
+    const tierDefs = [
+      { key: "standard", name: "Standard", price: "€9.99", features: "Live for 30 days · standard card · renew any time" },
+      { key: "plus", name: "Plus", price: "€19.99", popular: true, features: "Highlighted card styling · 1 bump to top · 30 days" },
+      { key: "featured", name: "Featured", price: "€34.99", features: "Homepage Featured slot · highlighted · 3 bumps · 30 days" }
+    ];
+    return {
+      v, set, done, notDone: !done,
+      isStep1: step === 0, isStep2: step === 1, isStep3: step === 2, isStep4: step === 3,
+      steps: labels.map((label, i) => ({
+        label, bar: i <= step ? "#405FF2" : "#E1E4EB", color: i <= step ? "#050B20" : "#9AA1AC",
+        go: () => !done && this.setState({ step: i })
+      })),
+      makes: data ? data.MAKES : [],
+      models: data && v.make ? [...new Set(data.LISTINGS.filter(l => l.make === v.make).map(l => l.model)), "Other…"] : [],
+      bodyTypes: data ? data.BODY_TYPES : [], fuels: data ? [...data.FUELS, "LPG"] : [], cities: data ? data.CITIES : [],
+      setMake: e => this.setV({ make: e.target.value, model: "" }),
+      setModel: e => this.setV({ model: e.target.value }),
+      photoSlots: Array.from({ length: 8 }, (_, i) => i < photos ? {
+        bg: data ? data.stripe(i + 3) : "#EEF0F4", border: "1px solid #E1E4EB", label: "", color: "#7A8494", cover: i === 0,
+        click: () => this.setState({ photos: photos - (i === photos - 1 ? 1 : 0) })
+      } : {
+        bg: "#FAFBFC", border: "1.5px dashed #C6CBD4", label: i === photos ? "+ Add photo" : "", color: "#7A8494", cover: false,
+        click: () => i === photos && this.setState({ photos: Math.min(photos + 1, 8) })
+      }),
+      photoHint: photos >= 3 ? { text: "✓ " + photos + " photos added", color: "#2BB673" } : { text: photos + "/3 minimum — add " + (3 - photos) + " more", color: "#D97706" },
+      negBg: v.negotiable ? "#405FF2" : "#C6CBD4", negDot: v.negotiable ? "16px" : "2px",
+      toggleNegotiable: () => this.setV({ negotiable: !v.negotiable }),
+      optionChips: (data ? data.OPTIONS : []).map(o => {
+        const on = v.options.includes(o);
+        return { label: o, ring: on ? "1.5px solid #405FF2" : "1px solid #E1E4EB", fill: on ? "#E9F2FF" : "#fff", color: on ? "#405FF2" : "#3A4048",
+          toggle: () => this.setV({ options: on ? v.options.filter(x => x !== o) : [...v.options, o] }) };
+      }),
+      tiers: tierDefs.map(t => ({ ...t, popular: !!t.popular, ring: tier === t.key ? "2px solid #405FF2" : "1px solid #E1E4EB", pick: () => this.setState({ tier: t.key }) })),
+      nextLabel: step === 3 ? "Pay & Publish →" : "Continue →",
+      backVis: step === 0 ? "hidden" : "visible",
+      back: () => this.setState({ step: Math.max(0, step - 1) }),
+      next: () => step === 3 ? this.setState({ done: true }) : this.setState({ step: step + 1 }),
+      summaryName: (v.make || "car") + " " + (v.model || "") + " listing"
+    };
+  }
+}
+</script>
+</body>
+</html>

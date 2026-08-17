@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Manrope',sans-serif;color:#050B20;background:#fff;-webkit-font-smoothing:antialiased}
+a{color:#050B20;text-decoration:none}a:hover{color:#405FF2}
+</style>
+</helmet>
+<div data-screen-label="Listing detail">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid #EEF0F4;position:sticky;top:0;background:#fff;z-index:20">
+    <a href="Landing.dc.html" style="font-size:20px;font-weight:800;letter-spacing:-0.5px">Auto<span style="color:#405FF2">Rinka</span></a>
+    <nav style="display:flex;gap:28px;font-size:14px;font-weight:600">
+      <a href="Browse.dc.html">Browse</a><a href="Sell.dc.html">Sell</a><a href="Pricing.dc.html">Pricing</a><a href="Dashboard.dc.html">Dashboard</a><a href="Messages.dc.html">Messages</a>
+    </nav>
+    <a href="Sell.dc.html" style="background:#405FF2;color:#fff;border-radius:99px;padding:9px 20px;font-size:13.5px;font-weight:600" style-hover="background:#2E4AD9;color:#fff">Sell your car</a>
+  </header>
+  <div style="max-width:1200px;margin:0 auto;padding:28px 40px 80px">
+    <div style="font-size:13px;color:#50565E;font-weight:600;margin-bottom:18px"><a href="Browse.dc.html" style="color:#50565E">Browse</a> <span style="opacity:.5">/</span> {{ crumb }}</div>
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:36px;align-items:start">
+      <!-- Left: gallery + specs + description -->
+      <div>
+        <div style="position:relative;height:420px;border-radius:16px;background:{{ mainPhoto }}">
+          <span style="position:absolute;bottom:12px;left:16px;font-family:monospace;font-size:11px;color:#7A8494">photo {{ photoNum }}/6: {{ photoLabel }}</span>
+          <sc-if value="{{ badge }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:16px;left:16px;background:{{ badgeColor }};color:#fff;font-size:12px;font-weight:700;border-radius:99px;padding:6px 14px">{{ badge }}</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:10px">
+          <sc-for list="{{ thumbs }}" as="t" hint-placeholder-count="6">
+            <span onClick="{{ t.pick }}" style="height:64px;border-radius:10px;background:{{ t.bg }};border:{{ t.ring }};cursor:pointer;box-sizing:border-box;display:block"></span>
+          </sc-for>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;letter-spacing:-0.4px;margin:38px 0 16px">Specifications</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 40px;border:1px solid #EEF0F4;border-radius:14px;padding:8px 24px">
+          <sc-for list="{{ specs }}" as="s" hint-placeholder-count="12">
+            <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid #F3F5F8;font-size:13.5px">
+              <span style="color:#50565E;font-weight:600">{{ s.k }}</span><span style="font-weight:700">{{ s.v }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <h2 style="font-size:20px;font-weight:800;letter-spacing:-0.4px;margin:38px 0 12px">Description</h2>
+        <p style="font-size:14.5px;color:#3A4048;line-height:1.7;margin:0">{{ description }}</p>
+        <h2 style="font-size:20px;font-weight:800;letter-spacing:-0.4px;margin:38px 0 14px">Options</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <sc-for list="{{ optionChips }}" as="o" hint-placeholder-count="3">
+            <span style="border:1px solid #E1E4EB;border-radius:99px;padding:8px 16px;font-size:13px;font-weight:600;color:#3A4048">✓ {{ o }}</span>
+          </sc-for>
+        </div>
+      </div>
+      <!-- Right: price + seller -->
+      <aside style="position:sticky;top:92px;display:flex;flex-direction:column;gap:18px">
+        <div style="border:1px solid #E1E4EB;border-radius:16px;padding:26px">
+          <div style="font-size:14.5px;font-weight:700;color:#50565E;margin-bottom:2px">{{ subTitle }}</div>
+          <h1 style="font-size:26px;font-weight:800;letter-spacing:-0.6px;margin:0 0 14px">{{ title }}</h1>
+          <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px">
+            <sc-if value="{{ oldPrice }}" hint-placeholder-val="{{ false }}"><span style="font-size:15px;color:#9AA1AC;text-decoration:line-through">{{ oldPrice }}</span></sc-if>
+            <span style="font-size:32px;font-weight:800;letter-spacing:-0.8px">{{ price }}</span>
+          </div>
+          <div style="font-size:12.5px;color:#50565E;font-weight:600;margin-bottom:20px">est. {{ monthly }} /mo financing · negotiable</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <a href="{{ msgHref }}" style="display:block;text-align:center;background:#405FF2;color:#fff;font-size:14.5px;font-weight:700;border-radius:12px;padding:14px 0" style-hover="background:#2E4AD9;color:#fff">Message Seller</a>
+            <span onClick="{{ revealPhone }}" style="display:block;text-align:center;border:1.5px solid #050B20;font-size:14.5px;font-weight:700;border-radius:12px;padding:13px 0;cursor:pointer">{{ phoneLabel }}</span>
+            <span onClick="{{ toggleSave }}" style="display:block;text-align:center;font-size:13.5px;font-weight:700;color:{{ saveColor }};cursor:pointer;padding:6px 0">{{ saveLabel }}</span>
+          </div>
+        </div>
+        <div style="border:1px solid #E1E4EB;border-radius:16px;padding:22px">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
+            <span style="width:46px;height:46px;border-radius:99px;background:#E9F2FF;color:#405FF2;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center">{{ sellerInitials }}</span>
+            <div>
+              <div style="font-size:15px;font-weight:800">{{ sellerName }} <sc-if value="{{ sellerBadge }}" hint-placeholder-val="{{ false }}"><span style="background:#E9F2FF;color:#405FF2;font-size:10.5px;font-weight:800;border-radius:99px;padding:3px 9px;vertical-align:2px">{{ sellerBadge }}</span></sc-if></div>
+              <div style="font-size:12.5px;color:#50565E;font-weight:600">★ {{ sellerRating }} · member since {{ sellerSince }}</div>
+            </div>
+          </div>
+          <div style="font-size:13px;color:#50565E;font-weight:600;line-height:1.6">📍 {{ city }} · TA valid until {{ ta }} · responds within a few hours</div>
+        </div>
+        <div style="border:1px solid #EEF0F4;border-radius:14px;padding:16px 20px;font-size:12.5px;color:#50565E;line-height:1.6;background:#FAFBFC">Safety tip: meet in a public place, verify VIN and TA documents before paying. AutoRinka never asks for payment outside the platform.</div>
+      </aside>
+    </div>
+    <!-- Similar -->
+    <h2 style="font-size:22px;font-weight:800;letter-spacing:-0.5px;margin:56px 0 20px">Similar listings</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:22px">
+      <sc-for list="{{ similar }}" as="c" hint-placeholder-count="4">
+        <a href="{{ c.href }}" style="display:block;border:1px solid #E1E4EB;border-radius:16px;overflow:hidden;color:#050B20" style-hover="box-shadow:0 14px 34px rgba(5,11,32,.10);color:#050B20">
+          <div style="position:relative;height:130px;background:{{ c.photo }}"><span style="position:absolute;bottom:6px;left:10px;font-family:monospace;font-size:10px;color:#7A8494">{{ c.photoLabel }}</span></div>
+          <div style="padding:14px 16px 16px">
+            <div style="font-size:14.5px;font-weight:700;margin-bottom:2px">{{ c.title }}</div>
+            <div style="font-size:12px;color:#50565E;margin-bottom:10px">{{ c.subtitle }}</div>
+            <div style="font-size:16px;font-weight:800">{{ c.price }}</div>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, photoIdx: 0, saved: false, phoneShown: false };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+  renderVals() {
+    const { data, photoIdx, saved, phoneShown } = this.state;
+    const id = Number(new URLSearchParams(window.location.search).get("id")) || 1;
+    const l = data ? (data.getListing(id) || data.LISTINGS[0]) : null;
+    if (!l) return { crumb: "…", thumbs: [], specs: [], similar: [], optionChips: [] };
+    const badgeColors = { "Great Price": "#2BB673", "Low Mileage": "#405FF2" };
+    const sellerName = l.tier === "featured" ? "Baltic Auto Group" : ["Tomas K.", "Rūta B.", "Mindaugas P.", "Eglė S."][l.id % 4];
+    const angles = ["front 3/4", "side profile", "rear 3/4", "interior dash", "seats", "engine bay"];
+    return {
+      crumb: l.make + " " + l.model + " " + l.year,
+      title: l.make + " " + l.model + " – " + l.year,
+      subTitle: l.trim,
+      mainPhoto: data.stripe(l.id + photoIdx), photoNum: photoIdx + 1,
+      photoLabel: l.make + " " + l.model + ", " + angles[photoIdx],
+      badge: l.badge || false, badgeColor: badgeColors[l.badge] || "#405FF2",
+      thumbs: angles.map((a, i) => ({
+        bg: data.stripe(l.id + i),
+        ring: i === photoIdx ? "2px solid #405FF2" : "1px solid #E1E4EB",
+        pick: () => this.setState({ photoIdx: i })
+      })),
+      price: data.fmtPrice(l.price), oldPrice: l.oldPrice ? data.fmtPrice(l.oldPrice) : false,
+      monthly: "€" + data.monthly(l.price),
+      specs: [["Make", l.make], ["Model", l.model], ["Year", l.year], ["Mileage", data.fmtKm(l.km)], ["Fuel", l.fuel], ["Gearbox", l.gearbox], ["Drivetrain", l.drive], ["Body type", l.body], ["Power", l.kw + " kW"], ["Color", l.color], ["Euro class", "Euro 6"], ["TA valid until", l.ta]].map(([k, v]) => ({ k, v })),
+      description: "Well maintained " + l.make + " " + l.model + " in " + l.color.toLowerCase() + ", full service history at an authorized dealer. Second owner, garage kept, no accidents. All maintenance done on schedule — recent brake pads and fresh oil service. TA valid until " + l.ta + ". Located in " + l.city + ", viewings welcome any day after 17:00.",
+      optionChips: l.options,
+      msgHref: "Messages.dc.html?listing=" + l.id,
+      phoneLabel: phoneShown ? "+370 612 34 567" : "Show Phone Number",
+      revealPhone: () => this.setState({ phoneShown: true }),
+      saveLabel: saved ? "♥ Saved" : "♡ Save listing",
+      saveColor: saved ? "#405FF2" : "#50565E",
+      toggleSave: () => this.setState({ saved: !saved }),
+      sellerName, sellerInitials: sellerName.split(" ").map(w => w[0]).join("").slice(0, 2),
+      sellerBadge: l.tier === "featured" ? "DEALER" : (l.tier === "plus" ? "VERIFIED" : false),
+      sellerRating: (4.5 + (l.id % 5) / 10).toFixed(1), sellerSince: 2019 + (l.id % 5),
+      city: l.city, ta: l.ta,
+      similar: data.LISTINGS.filter(x => x.id !== l.id && (x.body === l.body || x.make === l.make)).slice(0, 4).map(x => ({
+        href: "Listing.dc.html?id=" + x.id, photo: data.stripe(x.id), photoLabel: x.make + " " + x.model,
+        title: x.make + " " + x.model + " – " + x.year, subtitle: data.fmtKm(x.km) + " · " + x.fuel + " · " + x.city,
+        price: data.fmtPrice(x.price)
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

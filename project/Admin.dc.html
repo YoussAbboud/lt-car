@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;font-family:'Manrope',sans-serif;color:#050B20;background:#FAFBFC;-webkit-font-smoothing:antialiased}
+a{color:#050B20;text-decoration:none}a:hover{color:#405FF2}
+input{font-family:'Manrope',sans-serif}
+</style>
+</helmet>
+<div data-screen-label="Admin">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:18px 40px;border-bottom:1px solid #EEF0F4;background:#050B20;color:#fff">
+    <a href="Landing.dc.html" style="font-size:20px;font-weight:800;letter-spacing:-0.5px;color:#fff">Auto<span style="color:#6E8BFF">Rinka</span> <span style="font-size:11px;font-weight:800;background:rgba(255,255,255,.14);border-radius:99px;padding:4px 10px;vertical-align:3px;letter-spacing:.6px">ADMIN</span></a>
+    <nav style="display:flex;gap:26px;font-size:13.5px;font-weight:600">
+      <a href="Landing.dc.html" style="color:rgba(255,255,255,.75)">← Back to site</a>
+    </nav>
+  </header>
+  <div style="max-width:1160px;margin:0 auto;padding:34px 40px 80px">
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:30px">
+      <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+        <div style="background:#fff;border:1px solid #E1E4EB;border-radius:14px;padding:20px 22px">
+          <div style="font-size:12px;font-weight:700;color:#50565E;margin-bottom:6px">{{ k.k }}</div>
+          <div style="font-size:26px;font-weight:800;letter-spacing:-0.6px">{{ k.v }}</div>
+          <div style="font-size:12px;font-weight:700;color:#2BB673;margin-top:2px">{{ k.d }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start">
+      <!-- Moderation queue -->
+      <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;overflow:hidden">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:18px 22px;border-bottom:1px solid #EEF0F4">
+          <span style="font-size:16px;font-weight:800">Moderation queue <span style="color:#50565E;font-weight:600">({{ queueCount }})</span></span>
+          <label onClick="{{ toggleAuto }}" style="display:flex;align-items:center;gap:9px;font-size:12.5px;font-weight:700;color:#50565E;cursor:pointer">
+            Auto-approve
+            <span style="width:34px;height:20px;border-radius:99px;background:{{ autoBg }};position:relative;transition:background .15s"><span style="position:absolute;top:2px;left:{{ autoDot }};width:16px;height:16px;border-radius:99px;background:#fff;transition:left .15s"></span></span>
+          </label>
+        </div>
+        <sc-for list="{{ queue }}" as="q" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;gap:16px;padding:16px 22px;border-bottom:1px solid #F3F5F8;opacity:{{ q.opacity }}">
+            <span style="width:76px;height:52px;border-radius:10px;background:{{ q.photo }};flex-shrink:0"></span>
+            <div style="flex:1;min-width:0">
+              <a href="{{ q.href }}" style="font-size:14.5px;font-weight:800">{{ q.title }}</a>
+              <div style="font-size:12px;color:#50565E;font-weight:600">{{ q.meta }}</div>
+            </div>
+            <sc-if value="{{ q.pending }}" hint-placeholder-val="{{ true }}">
+              <span onClick="{{ q.approve }}" style="background:#2BB673;color:#fff;font-size:12px;font-weight:800;border-radius:10px;padding:9px 16px;cursor:pointer;flex-shrink:0">Approve</span>
+              <span onClick="{{ q.reject }}" style="border:1.5px solid #E1E4EB;color:#B4232A;font-size:12px;font-weight:800;border-radius:10px;padding:8px 16px;cursor:pointer;flex-shrink:0">Reject</span>
+              <span onClick="{{ q.feature }}" style="font-size:12px;font-weight:800;color:#405FF2;cursor:pointer;flex-shrink:0">☆ Feature</span>
+            </sc-if>
+            <sc-if value="{{ q.decided }}" hint-placeholder-val="{{ false }}">
+              <span style="font-size:12px;font-weight:800;border-radius:99px;padding:6px 14px;background:{{ q.pillBg }};color:{{ q.pillFg }};flex-shrink:0">{{ q.verdict }}</span>
+            </sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ queueEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:40px;text-align:center;font-size:13.5px;color:#50565E;font-weight:600">Queue clear ✓</div>
+        </sc-if>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <!-- Pricing config -->
+        <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;padding:22px">
+          <div style="font-size:14px;font-weight:800;margin-bottom:4px">Pricing config</div>
+          <div style="font-size:11.5px;color:#50565E;font-weight:600;margin-bottom:14px">Edits apply to new purchases immediately</div>
+          <sc-for list="{{ prices }}" as="p" hint-placeholder-count="5">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:13px;font-weight:600">
+              <span style="color:#50565E">{{ p.k }}</span>
+              <span style="display:flex;align-items:center;gap:4px;font-weight:800">€<input value="{{ p.v }}" onChange="{{ p.set }}" style="width:62px;border:1px solid #E1E4EB;border-radius:8px;padding:6px 8px;font-size:13px;font-weight:700;outline:none;text-align:right"></span>
+            </div>
+          </sc-for>
+          <span onClick="{{ savePrices }}" style="display:block;text-align:center;margin-top:12px;background:#050B20;color:#fff;font-size:12.5px;font-weight:700;border-radius:10px;padding:10px 0;cursor:pointer">{{ saveLabel }}</span>
+        </div>
+        <!-- Revenue -->
+        <div style="background:#fff;border:1px solid #E1E4EB;border-radius:16px;padding:22px">
+          <div style="font-size:14px;font-weight:800;margin-bottom:14px">Revenue — August</div>
+          <sc-for list="{{ revenue }}" as="r" hint-placeholder-count="4">
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;margin-bottom:4px"><span style="color:#50565E">{{ r.k }}</span><span>{{ r.v }}</span></div>
+              <div style="height:6px;border-radius:99px;background:#F3F5F8"><div style="height:6px;border-radius:99px;background:#405FF2;width:{{ r.w }}"></div></div>
+            </div>
+          </sc-for>
+          <div style="display:flex;justify-content:space-between;font-size:13.5px;font-weight:800;border-top:1px solid #EEF0F4;padding-top:12px;margin-top:12px"><span>Total</span><span>€4 312</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, decisions: {}, auto: false, prices: { "Standard listing": "9.99", "Plus listing": "19.99", "Featured listing": "34.99", "Bump (one-off)": "2.99", "Premium /mo": "24.99" }, saved: false };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+  renderVals() {
+    const { data, decisions, auto, prices, saved } = this.state;
+    const pend = data ? [data.LISTINGS[17], data.LISTINGS[12], data.LISTINGS[22], data.LISTINGS[5]] : [];
+    const sellers = ["Tomas K.", "Rūta B.", "UAB Autolygis", "Mindaugas P."];
+    const queue = pend.map((l, i) => {
+      const d = decisions[l.id];
+      return {
+        href: "Listing.dc.html?id=" + l.id, photo: data.stripe(l.id),
+        title: l.make + " " + l.model + " – " + l.year,
+        meta: data.fmtPrice(l.price) + " · " + l.city + " · by " + sellers[i] + " · submitted 2h ago",
+        pending: !d, decided: !!d, opacity: d ? 0.6 : 1,
+        verdict: d ? d.toUpperCase() : "",
+        pillBg: d === "approved" ? "#E6F7EF" : d === "featured" ? "#E9F2FF" : "#FDECEC",
+        pillFg: d === "approved" ? "#1D7A4F" : d === "featured" ? "#1B2B6B" : "#B4232A",
+        approve: () => this.setState({ decisions: { ...decisions, [l.id]: "approved" } }),
+        reject: () => this.setState({ decisions: { ...decisions, [l.id]: "rejected" } }),
+        feature: () => this.setState({ decisions: { ...decisions, [l.id]: "featured" } })
+      };
+    });
+    const open = queue.filter(q => q.pending).length;
+    return {
+      queue, queueCount: open, queueEmpty: data && open === 0,
+      autoBg: auto ? "#405FF2" : "#C6CBD4", autoDot: auto ? "16px" : "2px",
+      toggleAuto: () => this.setState({ auto: !auto }),
+      kpis: [
+        { k: "REVENUE (MTD)", v: "€4 312", d: "▲ 18% vs July" },
+        { k: "ACTIVE LISTINGS", v: "1 236", d: "▲ 64 this week" },
+        { k: "SUBSCRIBERS", v: "148", d: "112 Premium · 36 Dealer" },
+        { k: "PENDING REVIEW", v: String(open), d: "median wait 1.4 h" }
+      ],
+      prices: Object.entries(prices).map(([k, v]) => ({
+        k, v, set: e => this.setState({ prices: { ...prices, [k]: e.target.value }, saved: false })
+      })),
+      saveLabel: saved ? "✓ Saved to pricing_config" : "Save changes",
+      savePrices: () => this.setState({ saved: true }),
+      revenue: [
+        { k: "Subscriptions", v: "€2 486", w: "58%" },
+        { k: "Listing fees", v: "€1 512", w: "35%" },
+        { k: "Bumps", v: "€314", w: "7%" }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

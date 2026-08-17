@@ -1,0 +1,51 @@
+// AutoRinka mock data — Lithuanian market
+export const MAKES = ["Audi","BMW","Ford","Hyundai","Kia","Mazda","Mercedes-Benz","Nissan","Opel","Peugeot","Renault","Škoda","Toyota","Volkswagen","Volvo"];
+export const CITIES = ["Vilnius","Kaunas","Klaipėda","Šiauliai","Panevėžys","Alytus","Marijampolė"];
+export const BODY_TYPES = ["SUV","Sedan","Hatchback","Wagon","Coupe","Convertible"];
+export const FUELS = ["Petrol","Diesel","Hybrid","PHEV","Electric"];
+export const COLORS = [["Black","#1a1a1e"],["White","#f2f2f0"],["Grey","#8b8f96"],["Silver","#c9ccd2"],["Blue","#2a4d8f"],["Red","#a02830"],["Green","#3d5c48"]];
+export const OPTIONS = ["Heated seats","Parking sensors","Rear camera","Adaptive cruise","LED headlights","Panoramic roof","Tow hitch","Apple CarPlay"];
+
+const L = (id, make, model, trim, year, price, km, fuel, gearbox, drive, body, kw, color, city, tier, extra = {}) => ({
+  id, make, model, trim, year, price, km, fuel, gearbox, drive, body, kw, color, city, tier,
+  status: "active", isNew: km < 100, negotiable: true, ta: "2027-04-01",
+  options: OPTIONS.slice(id % 4, (id % 4) + 3), views: 120 + id * 37, saves: 4 + (id % 19), ...extra
+});
+
+export const LISTINGS = [
+  L(1, "BMW", "530d", "xDrive M Sport", 2019, 18900, 142000, "Diesel", "Automatic", "AWD", "Sedan", 195, "Black", "Vilnius", "featured", { badge: "Great Price", oldPrice: 20500 }),
+  L(2, "Volkswagen", "Tiguan", "2.0 TDI Highline", 2021, 24500, 68000, "Diesel", "Automatic", "AWD", "SUV", 110, "Grey", "Kaunas", "featured", { badge: "Low Mileage" }),
+  L(3, "Toyota", "RAV4", "2.5 Hybrid Active", 2022, 29900, 41000, "Hybrid", "Automatic", "AWD", "SUV", 160, "White", "Vilnius", "featured"),
+  L(4, "Audi", "A4", "40 TDI S line", 2020, 22400, 98000, "Diesel", "Automatic", "FWD", "Sedan", 140, "Blue", "Klaipėda", "plus", { badge: "Great Price", oldPrice: 23900 }),
+  L(5, "Škoda", "Octavia", "1.5 TSI Style", 2021, 17800, 54000, "Petrol", "Manual", "FWD", "Wagon", 110, "Silver", "Kaunas", "plus", { badge: "Low Mileage" }),
+  L(6, "Mercedes-Benz", "GLC 220d", "4MATIC AMG Line", 2020, 33500, 87000, "Diesel", "Automatic", "AWD", "SUV", 143, "Black", "Vilnius", "plus"),
+  L(7, "Volvo", "XC60", "B4 Momentum", 2021, 31900, 72000, "Diesel", "Automatic", "AWD", "SUV", 145, "Grey", "Šiauliai", "standard"),
+  L(8, "Renault", "Clio", "1.0 TCe Zen", 2022, 12900, 29000, "Petrol", "Manual", "FWD", "Hatchback", 67, "Red", "Panevėžys", "standard", { badge: "Low Mileage" }),
+  L(9, "Hyundai", "Tucson", "1.6 T-GDI Hybrid", 2023, 28700, 22000, "Hybrid", "Automatic", "FWD", "SUV", 169, "Blue", "Vilnius", "standard"),
+  L(10, "Ford", "Focus", "1.5 EcoBlue Titanium", 2019, 12400, 121000, "Diesel", "Manual", "FWD", "Wagon", 88, "White", "Kaunas", "standard", { badge: "Great Price", oldPrice: 13500 }),
+  L(11, "Kia", "Sportage", "1.6 CRDi GT-Line", 2022, 26800, 38000, "Diesel", "Automatic", "AWD", "SUV", 100, "Green", "Klaipėda", "standard"),
+  L(12, "Peugeot", "308", "1.2 PureTech Allure", 2021, 15600, 47000, "Petrol", "Automatic", "FWD", "Hatchback", 96, "Grey", "Vilnius", "standard"),
+  L(13, "Nissan", "Qashqai", "1.3 DIG-T Tekna", 2021, 20400, 59000, "Petrol", "Automatic", "FWD", "SUV", 116, "Silver", "Alytus", "standard"),
+  L(14, "Mazda", "CX-5", "2.2 Skyactiv-D", 2020, 21900, 84000, "Diesel", "Automatic", "AWD", "SUV", 135, "Red", "Kaunas", "standard"),
+  L(15, "Opel", "Astra", "1.5 D Elegance", 2020, 13200, 92000, "Diesel", "Manual", "FWD", "Hatchback", 90, "Black", "Marijampolė", "standard", { badge: "Great Price", oldPrice: 14400 }),
+  L(16, "Volkswagen", "ID.4", "Pro Performance", 2022, 31500, 33000, "Electric", "Automatic", "RWD", "SUV", 150, "White", "Vilnius", "plus"),
+  L(17, "BMW", "320i", "Sport Line", 2018, 16700, 134000, "Petrol", "Automatic", "RWD", "Sedan", 135, "Blue", "Šiauliai", "standard"),
+  L(18, "Toyota", "Corolla", "1.8 Hybrid Comfort", 2023, 23900, 9000, "Hybrid", "Automatic", "FWD", "Sedan", 103, "Silver", "Vilnius", "standard", { badge: "Low Mileage", isNew: false }),
+  L(19, "Audi", "Q5", "45 TFSI quattro", 2021, 35800, 61000, "Petrol", "Automatic", "AWD", "SUV", 195, "Grey", "Kaunas", "featured"),
+  L(20, "Volvo", "V60", "D3 Inscription", 2019, 19200, 110000, "Diesel", "Automatic", "FWD", "Wagon", 110, "Black", "Klaipėda", "standard"),
+  L(21, "Mercedes-Benz", "E 220d", "Avantgarde", 2020, 28400, 96000, "Diesel", "Automatic", "RWD", "Sedan", 143, "Silver", "Vilnius", "plus"),
+  L(22, "Škoda", "Kodiaq", "2.0 TDI 4x4 Style", 2021, 28900, 76000, "Diesel", "Automatic", "AWD", "SUV", 147, "White", "Panevėžys", "standard"),
+  L(23, "Renault", "Megane", "E-Tech EV60", 2023, 27500, 14000, "Electric", "Automatic", "FWD", "Hatchback", 160, "Blue", "Vilnius", "standard", { badge: "Low Mileage" }),
+  L(24, "Ford", "Kuga", "2.5 PHEV ST-Line", 2022, 27900, 44000, "PHEV", "Automatic", "FWD", "SUV", 165, "Red", "Kaunas", "standard"),
+];
+
+export const fmtPrice = (n) => "€" + n.toLocaleString("lt-LT").replace(/,/g, " ");
+export const fmtKm = (n) => n.toLocaleString("lt-LT") + " km";
+export const monthly = (price) => Math.round((price * 1.07) / 60);
+export const getListing = (id) => LISTINGS.find(l => l.id === Number(id));
+export const stripe = (seed) => {
+  const hues = [[222, 14], [220, 8], [215, 10], [228, 12]];
+  const [h, s] = hues[seed % hues.length];
+  const l1 = 90 - (seed % 3) * 2, l2 = l1 - 4;
+  return `repeating-linear-gradient(135deg, hsl(${h} ${s}% ${l1}%) 0 14px, hsl(${h} ${s}% ${l2}%) 14px 28px)`;
+};
