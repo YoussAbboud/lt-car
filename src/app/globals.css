@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: var(--font-manrope), sans-serif;
+
+  --color-ink: #050b20;
+  --color-accent: #405ff2;
+  --color-accent-deep: #2e4ad9;
+  --color-logo-accent: #6e8bff;
+  --color-muted: #50565e;
+  --color-line: #e1e4eb;
+  --color-hairline: #eef0f4;
+  --color-badge-green: #2bb673;
+  --color-panel-blue: #e9f2ff;
+  --color-panel-pink: #ffe9f2;
+}
+
+@layer base {
+  body {
+    /* The design prototype relied on the browser default line-height. */
+    line-height: normal;
+    @apply bg-white font-sans text-ink antialiased;
+  }
+}
